@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Me API Playground</title>
+</head>
+
+<body>
+    <h2>My Profile</h2>
+    <div id="profile"></div>
+
+    <h3>Search Skill</h3>
+    <input id="skill" />
+    <button onclick="searchSkill()">Search</button>
+    <div id="skillResult"></div>
+
+    <h3>Projects</h3>
+    <div id="projects"></div>
+
+<script>
+const API = "http://127.0.0.1:8000";
+
+// Load profile
+fetch(API + "/profile")
+.then(r => r.json())
+.then(data => {
+    document.getElementById("profile").innerHTML =
+        "Name: " + data.name + "<br>" +
+        "Skills: " + data.skills + "<br>" +
+        "Education: " + data.education;
+});
+
+// Load projects
+fetch(API + "/projects")
+.then(r => r.json())
+.then(data => {
+    let txt = "";
+    data.forEach(p => {
+        txt += `<b>${p.title}</b><br>${p.description}<br><a href='${p.links}'>Link</a><br><br>`;
+    });
+    document.getElementById("projects").innerHTML = txt;
+});
+
+// Search skill
+function searchSkill(){
+    let s = document.getElementById("skill").value;
+
+    fetch(API + "/skills?skill=" + s)
+    .then(r => r.json())
+    .then(data => {
+        document.getElementById("skillResult").innerText =
+            data.length > 0 ? "Skill Found" : "Not Found";
+    });
+}
+</script>
+
+</body>
+</html>
