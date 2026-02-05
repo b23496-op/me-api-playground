@@ -19,7 +19,8 @@ app.add_middleware(
 )
 
 # ---- SERVE FRONTEND ----
-app.mount("/static", StaticFiles(directory="static"), name="static")
+app.mount("/static", StaticFiles(directory="backend/static"), name="static")
+
 
 @app.get("/")
 def home():
